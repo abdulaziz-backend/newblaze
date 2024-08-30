@@ -1,0 +1,50 @@
+{
+    "6236467772": {
+        "user_id": 6236467772,
+        "username": "ablaze_coder",
+        "name": "\u2205",
+        "amount": 300,
+        "invited_friends": 2,
+        "invited_friends_usernames": [
+            "Muhammedov_Org",
+            "qodirjon_88"
+        ]
+    },
+    "6536593290": {
+        "user_id": 6536593290,
+        "username": "Muhammedov_Org",
+        "name": "\u1d0d\u1d1c\u029c\u1d00\u1d0d\u1d0d\u1d07\u1d05\u1d0f\u1d20 \uf8ff\ud83e\uddb4",
+        "amount": 0,
+        "invited_friends": 0,
+        "invited_friends_usernames": []
+    },
+    "995430334": {
+        "user_id": 995430334,
+        "username": "qodirjon_88",
+        "name": "Qodirjon",
+        "amount": 0,
+        "invited_friends": 0,
+        "invited_friends_usernames": []
+    },
+    "1004517690": {
+        "user_id": 1004517690,
+        "username": "\u0425\u0430\u043c\u0438\u0434\u0436\u043e\u043d",
+        "name": "\u0425\u0430\u043c\u0438\u0434\u0436\u043e\u043d",
+        "amount": 0,
+        "invited_friends": 0,
+        "invited_friends_usernames": []
+    },
+    "1483314550": {
+        "user_id": 1483314550,
+        "username": "code_with_ablaze",
+        "name": "Malika",
+        "amount": 0,
+        "invited_friends": 0,
+        "invited_friends_usernames": []
+    }
+}
+
+
+
+
+

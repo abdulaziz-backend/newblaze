@@ -1,0 +1,10 @@
+{
+    "6236467772": {
+        "user_id": 6236467772,
+        "username": "ablaze_coder",
+        "name": "\u2205",
+        "amount": 0,
+        "invited_friends": 0,
+        "invited_friends_usernames": []
+    }
+}

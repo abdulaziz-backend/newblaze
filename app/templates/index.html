@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$BLAZE🔥</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: none;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen img {
+            width: 150px;
+            height: 150px;
+        }
+
+        body.loaded {
+            background-image: url("{% static 'assets/bg.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .center-section, .share-section, .bottom-nav, .connect-wallet {
+            display: none;
+        }
+
+        .center-section {
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .amount {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .currenscy {
+            font-size: 1.5em;
+        }
+
+        .share-section {
+            flex: 1;
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            margin-bottom: 60px;
+            white-space: nowrap;
+            cursor: grab;
+        }
+
+        .share-section:active {
+            cursor: grabbing;
+        }
+
+        .share-section .box {
+            display: inline-block;
+            background-color: rgba(65, 63, 63, 0.5);
+            padding: 15px;
+            border-radius: 25px;
+            text-align: left;
+            min-width: 250px;
+            margin: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            background-color: rgba(24, 24, 24, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .bottom-nav a {
+            text-align: center;
+            flex: 1;
+            color: white;
+            text-decoration: none;
+        }
+
+        .bottom-nav i {
+            font-size: 20px;
+        }
+
+        .connect-wallet {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <img src="{% static 'assets/icon.png' %}" alt="Loading Icon">
+    </div>
+
+    <button class="connect-wallet" onclick="openModal()">
+        <i class="fas fa-wallet"></i> Connect wallet
+    </button>
+
+    <div class="center-section">
+        <img src="{% static 'assets/icon.png' %}" alt="Icon" class="dog-image">
+        <div class="amount">
+            <span>{{ coins }}</span>
+        </div>
+        <div class="currenscy">$BLAZE</div>
+    </div>
+
+    <div class="share-section" id="shareSection">
+        <div class="box">
+            <h3>Share your stories</h3>
+            <p>about us</p>
+            <button>Share</button>
+        </div>
+        <div class="box">
+            <h3>Join Community</h3>
+            <p>On Telegram</p>
+            <button>Join</button>
+        </div>
+        <div class="box">
+            <h3>Follow us on X.com</h3>
+            <p>Stay updated with the latest news</p>
+            <button>Follow</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="{% url 'index' %}?user_id={{ request.session.user_id }}"><i class="fas fa-home"></i></a>
+        <a href="{% url 'tasks' %}"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></a>
+        <a href="{% url 'leaderboard' %}?user_id={{ request.session.user_id }}"><i class="fa-solid fa-fire"></i></a>
+        <a href="{% url 'friends' %}?user_id={{ request.session.user_id }}"><i class="fa-solid fa-user-group"></i></a>
+    </nav>
+
+    <div id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.body.classList.add('loaded');
+                document.querySelector('.center-section').style.display = 'block';
+                document.querySelector('.share-section').style.display = 'flex';
+                document.querySelector('.bottom-nav').style.display = 'flex';
+                document.querySelector('.connect-wallet').style.display = 'block';
+            }, 2000);
+        });
+    </script>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</body>
+
+</html>

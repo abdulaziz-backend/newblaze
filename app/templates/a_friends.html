@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends List</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .af {
+            background-color: transparent;
+            color: white;
+            padding: 15px;
+            margin: 15px;
+            width: calc(100% - 30px);
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .invite-section {
+            background-color: transparent;
+            color: white;
+            padding: 15px;
+            margin: 15px;
+            text-align: center;
+        }
+
+        .invite-button {
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            border: none;
+            width: 100%;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        #friends-list-container {
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        .friend-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 18px;
+            text-align: left;
+        }
+
+        .friend-item:last-child {
+            border-bottom: none;
+        }
+
+        .icon-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-centered img {
+            width: 150px;
+            height: 150px;
+        }
+
+        .see {
+            color: grey;
+            font-size: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <img src="{% static 'assets/icon.png' %}" alt="Loading Icon">
+    </div>
+
+    <div class="af">
+        <h2>Invite Blazers and get more $BLAZE</h2>
+        <div class="invite-section">
+            <div class="icon-centered">
+                <img src="{% static 'assets/icon.png' %}" alt="Invite">
+            </div>
+            <h4>Blaze the button to invite friends</h4>
+            <button class="invite-button">Invite Friends</button>
+        </div>
+        <div id="friends-list-container">
+
+            {% if friends %}
+                <ul>
+                    {% for friend in friends %}
+                        <li class="friend-item">
+                            {{ friend.username }} - {{ friend.amount }} $BLAZE
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="see">you can see your friends list using /profile command on the bot</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="{% url 'index' %}?user_id={{ user_id }}"><i class="fas fa-home"></i></a>
+        <a href="{% url 'tasks' %}"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></a>
+        <a href="{% url 'leaderboard' %}?user_id={{ user_id }}"><i class="fa-solid fa-fire"></i></a>
+        <a href="{% url 'friends' %}?user_id={{ user_id }}"><i class="fa-solid fa-user-group"></i></a>
+    </nav>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

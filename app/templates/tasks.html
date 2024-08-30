@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks🔥</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: none;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen img {
+            width: 150px;
+            height: 150px;
+            display: block;
+        }
+
+        .tasks-header,
+        .done-header {
+            text-align: left;
+            margin-top: 20px;
+            padding: 10px;
+            color: white;
+        }
+
+        .tasks-list,
+        .done-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .task-item i {
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .task-details h4,
+        .task-details p {
+            margin: 0;
+            overflow-wrap: break-word;
+        }
+
+        .task-details h4 {
+            margin-bottom: 5px;
+        }
+
+        .task-button {
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .task-button.start {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .task-button.claim {
+            background-color: green;
+            color: #fff;
+        }
+
+        .task-button.claimed {
+            background-color: rgb(208, 255, 0);
+            color: #fff;
+        }
+
+        .task-button .spinner {
+            display: none;
+            margin-right: 10px;
+            border: 2px solid white;
+            border-top: 2px solid black;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            background-color: rgba(24, 24, 24, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .bottom-nav div {
+            text-align: center;
+            flex: 1;
+        }
+
+        .bottom-nav i {
+            font-size: 20px;
+            color: white;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .done-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px;
+            width: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .done-item i {
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .done-list {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <img src="{% static 'assets/icon.png' %}" alt="Loading Icon">
+    </div>
+
+    <div class="tasks-header">
+        <h2>Tasks</h2>
+    </div>
+    <div class="tasks-list">
+    {% for task in tasks %}
+    <div class="task-item" data-id="{{ task.id }}">
+        <i class="fas fa-tasks"></i>
+        <div class="task-details">
+            <h4>{{ task.title }}</h4>
+            <p>{{ task.points }} $BLAZE</p>
+        </div>
+        <a href="#" class="task-button start" data-link="{{ task.button_link }}" data-id="{{ task.id }}" data-amount="{{ task.points }}" data-user-id="{{ user_id }}">
+            <div class="spinner" style="display:none;"></div>
+            <span>Start</span>
+        </a>
+        <form action="{% url 'remove_task' task.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user_id }}">
+        </form>
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="done-header">
+        <h2>Done</h2>
+    </div>
+    <div class="done-list">
+
+    </div>
+    
+    <nav class="bottom-nav">
+        <a href="{% url 'index' %}?user_id={{ request.session.user_id }}"><i class="fas fa-home"></i></a>
+        <a href="{% url 'tasks' %}"><i class="fa-solid fa-list-check" style="color: #ffffff;"></i></a>
+        <a href="{% url 'leaderboard' %}?user_id={{ request.session.user_id }}"><i class="fa-solid fa-fire"></i></a>
+        <a href="{% url 'friends' %}?user_id={{ request.session.user_id }}"><i class="fa-solid fa-user-group"></i></a>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            setTimeout(function () {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.body.style.background = "url('{% static 'assets/task.png' %}')";
+                document.body.style.backgroundSize = "cover";
+            }, 500);
+        
+            const taskButtons = document.querySelectorAll('.task-button');
+            const doneList = document.querySelector('.done-list');
+        
+            taskButtons.forEach(button => {
+                const id = button.getAttribute('data-id');
+                const link = button.getAttribute('data-link');
+                const taskAmount = parseInt(button.getAttribute('data-amount'));
+                const userId = button.getAttribute('data-user-id');
+                const item = button.closest('.task-item');
+                const spinner = button.querySelector('.spinner');
+        
+                const taskStatus = localStorage.getItem(`task-${id}`);
+        
+                if (taskStatus === 'claimed') {
+                    button.classList.add('claimed');
+                    button.innerHTML = 'Claimed <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                    button.disabled = true;
+                    doneList.appendChild(item);
+                } else if (taskStatus === 'started') {
+                    button.classList.remove('start');
+                    button.classList.add('claim');
+                    button.querySelector('span').textContent = 'Claim';
+                    button.disabled = false;
+                } else {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        window.open(link, '_blank');
+                        spinner.style.display = 'block';
+        
+                        setTimeout(function () {
+                            spinner.style.display = 'none';
+                            button.classList.remove('start');
+                            button.classList.add('claim');
+                            button.querySelector('span').textContent = 'Claim';
+                            button.disabled = false; 
+        
+                            localStorage.setItem(`task-${id}`, 'started');
+                        }, 5000); 
+        
+                        button.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            if (!button.classList.contains('claim')) return;
+        
+                            button.classList.add('claimed');
+                            button.innerHTML = 'Claimed <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                            button.disabled = true; 
+                            doneList.appendChild(item);
+        
+                            localStorage.setItem(`task-${id}`, 'claimed');
+        
+                            fetch('/update-amount', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    user_id: userId,
+                                    task_amount: taskAmount
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log('Amount updated successfully');
+                                } else {
+                                    console.log('Failed to update amount');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                        }, { once: true }); 
+                    });
+                }
+            });
+        });
+         
+    </script>
+</body>
+
+</html>
